@@ -45,13 +45,20 @@ const ExploreHeader = () => {
                             <TouchableOpacity style={styles.searchBtn}>
                                 <Ionicons name='search' size={24} />
                                 <View>
-                                    <Text>Search for Chat</Text>
-                                    <Text style={{ color: Colors.grey }}>find • friends</Text>
+                                    <Text style={{ fontSize: 20, color: Colors.grey }}>Search</Text>
                                 </View>
                             </TouchableOpacity>
                         </Link>
                         <TouchableOpacity style={styles.filterBtn}>
                             <Ionicons name='options-outline' size={24} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.actionRow, { gap: 50 }]}>
+                        <TouchableOpacity style={[styles.btnOutline, { backgroundColor: Colors.primary }]}>
+                            <Text style={[styles.btnOutlineText]}>All Present</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btnOutline}>
+                            <Text style={styles.btnOutlineText}>All Absent</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -62,9 +69,9 @@ const ExploreHeader = () => {
 
 const styles = StyleSheet.create({
     container: {
-        height: 80,
+        height: 110,
         backgroundColor: Colors.light,
-        paddingTop: 5,
+        paddingTop: 16,
     },
     safeView: {
         flex: 1,
@@ -75,26 +82,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 24,
+        paddingHorizontal: 8,
         paddingBottom: 16,
         gap: 10,
     },
     filterBtn: {
-        padding: 10,
+        padding: 5,
         borderWidth: 1,
         borderColor: Colors.grey,
         borderRadius: 24,
     },
     searchBtn: {
+        height: 40,
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10,
+        gap: 16,
         borderColor: '#c2c2c2',
         borderWidth: StyleSheet.hairlineWidth,
         flex: 1,
-        padding: 14,
-        borderRadius: 30,
+        paddingLeft: 10,
+        borderRadius: 8,
         elevation: 2,
         shadowColor: '#000',
         shadowRadius: 8,
@@ -103,6 +111,22 @@ const styles = StyleSheet.create({
             width: 1,
             height: 1,
         },
+    },
+    btnOutline: {
+        flex: 1,
+        backgroundColor: '#e2e2e2',
+        borderColor: Colors.grey,
+        height: 30,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+    },
+    btnOutlineText: {
+        color: '#000',
+        fontSize: 16,
+        fontFamily: 'mon-sb',
     },
 })
 

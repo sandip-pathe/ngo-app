@@ -1,79 +1,129 @@
-import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import ProfileIcon from '../../components/StudentProfileIcon';
+import Data from '../../constants/Data';
+import { Stack } from 'expo-router';
+import ExploreHeader from '../../components/ExploreHeader';
 
-const App = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+interface DataItem {
+  id: string;
+  name: string;
+  presentee: number;
+  rollNumber: string;
+}
+
+const renderItem = ({ item }: { item: DataItem }) => {
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
+    <View style={styles.itemContainer}>
+      <ProfileIcon fullName={item.name} />
+      <View style={styles.detailsContainer}>
+        <Text style={styles.nameText}>{item.name}</Text>
+        <View style={styles.infoContainer}>
+          <View style={styles.badgeContainer}>
+            <Text style={styles.badgeText}>{item.rollNumber}</Text>
+          </View>
+          <View style={styles.presentDaysContainer}>
+            <Text style={styles.presentDaysText}>{item.presentee}</Text>
           </View>
         </View>
-      </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable>
+      </View>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Mark Present</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
+const keyExtractor = (item: DataItem) => item.id;
+const ItemSeparator = () => {
+  return (
+    <View style={styles.separator} />
+  )
+}
+const App = () => {
+  return (
+    <>
+      <Stack.Screen options={{
+        header: () => <ExploreHeader />,
+      }}
+      />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={Data}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          contentContainerStyle={styles.container}
+          ItemSeparatorComponent={ItemSeparator}
+        />
+      </View>
+    </>
+  );
+};
+
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
+  container: {
+    padding: 16,
+    backgroundColor: '#fff',
+    paddingTop: 120,
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
+  itemContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    marginBottom: 16,
+  },
+  detailsContainer: {
+    flex: 1,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  nameText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    flexShrink: 1,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  badgeContainer: {
+    backgroundColor: '#FFD700',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 8,
+  },
+  badgeText: {
+    fontSize: 14,
+    color: 'black',
+    flexShrink: 1,
+  },
+  presentDaysContainer: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    marginLeft: 8,
+  },
+  presentDaysText: {
+    fontSize: 14,
+    color: 'white',
+    flexShrink: 1,
   },
   button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
     backgroundColor: '#2196F3',
+    borderRadius: 8,
+    padding: 12,
   },
-  textStyle: {
+  buttonText: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#CED0CE',
+    marginVertical: 8,
   },
 });
 

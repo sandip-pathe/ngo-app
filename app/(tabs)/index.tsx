@@ -1,6 +1,6 @@
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import { Link, Stack } from 'expo-router'
+import { Stack } from 'expo-router'
 import ExploreHeader from '../../components/ExploreHeader'
 
 
