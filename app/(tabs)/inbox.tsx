@@ -1,12 +1,17 @@
-import { View, Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { Link } from 'expo-router'
 
-const Chat = () => {
+const inbox = () => {
   return (
     <View>
-      <Text>Chat</Text>
+      <Link href={'/EventReports/ScreenOne'}>
+        <Text>Sandip</Text>
+      </Link>
     </View>
   )
 }
 
-export default Chat
+export default inbox
+
+const styles = StyleSheet.create({})

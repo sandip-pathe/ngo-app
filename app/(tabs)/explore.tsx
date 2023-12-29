@@ -4,6 +4,7 @@ import ProfileIcon from '../../components/StudentProfileIcon';
 import Data from '../../constants/Data';
 import { Stack } from 'expo-router';
 import ExploreHeader from '../../components/ExploreHeader';
+import { NavigationContainer } from '@react-navigation/native';
 
 interface DataItem {
   id: string;
@@ -88,13 +89,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   badgeContainer: {
-    backgroundColor: '#FFD700',
-    paddingVertical: 4,
+    backgroundColor: '#e2e2e2',
+    paddingVertical: 2,
     paddingHorizontal: 8,
-    borderRadius: 8,
+    borderRadius: 0,
   },
   badgeText: {
-    fontSize: 14,
+    fontSize: 10,
     color: 'black',
     flexShrink: 1,
   },

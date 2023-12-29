@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native'
 import React, { Component } from 'react'
 import { Tabs } from 'expo-router'
-import { Octicons } from '@expo/vector-icons';
+import { Feather, FontAwesome5, Foundation, Octicons } from '@expo/vector-icons';
 
 export class Layout extends Component {
     render() {
@@ -13,26 +13,26 @@ export class Layout extends Component {
                 <Tabs.Screen
                     name="index"
                     options={{
-                        tabBarLabel: 'Feed',
-                        tabBarIcon: ({ color, size }) => <Octicons name="feed-heart" size={size} color={color} />
+                        tabBarLabel: 'Home',
+                        tabBarIcon: ({ color, size }) => <FontAwesome5 name="home" size={size} color={color} />
                     }} />
                 <Tabs.Screen
                     name="inbox"
                     options={{
                         tabBarLabel: 'Chat',
-                        tabBarIcon: ({ color, size }) => <Octicons name="alert" size={size} color={color} />
+                        tabBarIcon: ({ color, size }) => <FontAwesome5 name='ello' size={size} color={color} />
                     }} />
                 <Tabs.Screen
                     name="explore"
                     options={{
                         tabBarLabel: 'Attendance',
-                        tabBarIcon: ({ color, size }) => <Octicons name="arrow-right" size={size} color={color} />
+                        tabBarIcon: ({ color, size }) => <Foundation name="graph-pie" size={size} color={color} />
                     }} />
                 <Tabs.Screen
                     name="profile"
                     options={{
                         tabBarLabel: 'Profile',
-                        tabBarIcon: ({ color, size }) => <Octicons name="person" size={size} color={color} />
+                        tabBarIcon: ({ color, size }) => <FontAwesome5 name="user-alt" size={size} color={color} />
                     }} />
 
 
