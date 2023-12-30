@@ -23,7 +23,6 @@ export const defaultStyles = StyleSheet.create({
   btnText: {
     color: '#fff',
     fontSize: 16,
-    fontFamily: 'mon-b',
   },
   btnIcon: {
     position: 'absolute',
@@ -55,6 +54,5 @@ export const defaultStyles = StyleSheet.create({
   btnOutlineText: {
     color: '#000',
     fontSize: 16,
-    fontFamily: 'mon-sb',
   },
 });
