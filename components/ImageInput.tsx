@@ -43,8 +43,6 @@ const ImageInput: React.FC<ImageInputProps> = ({ imageUri, onChangeImage }) => {
     }
 
 
-
-
     return (
         <TouchableWithoutFeedback onPress={handlePress}>
             <View style={styles.container}>
@@ -55,7 +53,6 @@ const ImageInput: React.FC<ImageInputProps> = ({ imageUri, onChangeImage }) => {
     )
 }
 
-
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
@@ -65,7 +62,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         overflow: 'hidden',
         width: 100,
-
     },
     image: {
         height: '100%',
@@ -74,4 +70,16 @@ const styles = StyleSheet.create({
 })
 
 export default ImageInput
+
+
+
+// const App = () => {
+//     const [imageUri, setImageUri] = useState(String);
+//     return (
+//         <View style={styles.container}>
+//             <ImageInput imageUri={imageUri} onChangeImage={setImageUri} />
+//         </View>
+// )
+
+
 
