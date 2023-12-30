@@ -1,17 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Link } from 'expo-router'
+// ScreenOne.js
+import React from 'react';
+import { View, Text } from 'react-native';
+import MyInputField from '../../components/MyInputField';
+import { defaultStyles } from '../../constants/Styles';
+import { Link } from 'expo-router';
 
-const inbox = () => {
+const ScreenOne = () => {
   return (
-    <View>
-      <Link href={'/EventReports/ScreenOne'}>
-        <Text>Sandip</Text>
-      </Link>
+    <View style={{ alignContent: 'center', flex: 1 }}>
+      <MyInputField label="Name" />
+      <Link href={"/EventReports/ScreenTwo"}>Sandip</Link>
     </View>
-  )
-}
 
-export default inbox
+  );
+};
 
-const styles = StyleSheet.create({})
+export default ScreenOne;

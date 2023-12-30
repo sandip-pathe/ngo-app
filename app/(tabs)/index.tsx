@@ -1,23 +1,40 @@
-import { View, StyleSheet } from 'react-native'
-import React from 'react'
-import { Stack } from 'expo-router'
-import ExploreHeader from '../../components/ExploreHeader'
-import ScreenOne from '../EventReports/ScreenOne'
+import { Button, Image, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import ImageInput from '../../components/ImageInput';
+import ImageInputList from '../../components/ImageInputList';
 
+interface AppProps { }
 
-const Page = () => {
+const App: React.FC<AppProps> = () => {
+    const [imageUris, setImageUris] = useState<string[]>([]);
+
+    const handleAdd = (uri: string) => {
+        setImageUris([...imageUris, uri]);
+    };
+
+    const handleRemove = (uri: string) => {
+        setImageUris(imageUris.filter((imageUri) => imageUri !== uri));
+    };
+
     return (
-        <View style={{ flex: 1 }}>
-            <Stack.Screen options={{
-                header: () => <ExploreHeader />,
-            }}
+        <View style={styles.container}>
+            <ImageInputList
+                imageUris={imageUris}
+                onAddImage={handleAdd}
+                onRemoveImage={handleRemove}
             />
         </View>
-    )
-}
+    );
+};
+
+export default App;
 
 const styles = StyleSheet.create({
-
-})
-
-export default Page
+    container: {
+        flex: 1,
+        padding: 16,
+        alignItems: 'center', // Changed from alignContent to alignItems
+        justifyContent: 'center',
+    },
+});
