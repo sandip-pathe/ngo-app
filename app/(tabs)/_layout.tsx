@@ -34,10 +34,6 @@ export class Layout extends Component {
                         tabBarLabel: 'Profile',
                         tabBarIcon: ({ color, size }) => <FontAwesome5 name="user-alt" size={size} color={color} />
                     }} />
-
-
-
-
             </Tabs>
         )
     }

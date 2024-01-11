@@ -6,10 +6,29 @@ import TimePicker from '../../components/TimePicker';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import Separator from '../../components/Separator';
-import { Link, useNavigation } from 'expo-router';
-import firestore from '@react-native-firebase/firestore';
+import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList, ScreenOneRouteProp } from './NavigationTypes';
 
-const ScreenOne = () => {
+interface EventData {
+    eventName: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    description: string;
+    attendees: number;
+    venue: string;
+}
+
+
+interface ScreenOneProps {
+    navigation: {
+        navigate: (screenName: string, params: object) => void
+    }
+}
+
+const ScreenOne: React.FC<ScreenOneProps> = ({ navigation }) => {
+
     const [date, setDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -20,8 +39,9 @@ const ScreenOne = () => {
     const [attendees, setAttendees] = useState('');
     const [venue, setVenue] = useState('');
 
-    const eventsRef = firestore().collection('events');
-    const navigation: any = useNavigation();
+
+    // const firestoreInstance: Firestore = getFirestore(FIREBASE_APP as FirebaseApp);
+    // const eventsRef = collection(firestoreInstance, 'events');
 
     const showDatepicker = () => {
         setShowDatePicker(true);
@@ -41,23 +61,22 @@ const ScreenOne = () => {
         }
     };
 
-    const handleNextButtonClick = () => {
-        // Prepare data from ScreenOne
-        const eventDataFromScreenOne = {
+    const handleNext = () => {
+        const eventDataFromScreenOne: EventData = {
             eventName,
-            date: selectedDate?.toLocaleDateString(),
-            startTime: selectedTime,
-            endTime: selectedTime,
+            date: '', // Set the date value based on your implementation
+            startTime: '',
+            endTime: '',
             description,
-            attendees,
+            attendees: parseInt(attendees, 10) || 0,
             venue,
         };
 
-        // Navigate to ScreenTwo and pass data as params
-        navigation.push('ScreenTwo', {
-            eventDataFromScreenOne,
-        });
+
+
+        navigation.navigate('ScreenTwo', { name: 'Jane' })
     };
+
 
     return (
         <ScrollView style={styles.container}>
@@ -106,8 +125,8 @@ const ScreenOne = () => {
                     <TextInput style={[defaultStyles.inputField]} placeholder="Venue" multiline onChangeText={setVenue} />
                 </View>
                 <Separator />
-                <TouchableOpacity style={styles.submitButton} onPress={handleNextButtonClick}>
-                    <Link href={"/EventReports/ScreenTwo"}>Next</Link>
+                <TouchableOpacity style={styles.submitButton} onPress={handleNext}>
+                    <Text>Next</Text>
                     <FontAwesome name="angle-double-right" size={24} color="black" />
                 </TouchableOpacity>
             </View>

@@ -1,0 +1,145 @@
+// Import React and other necessary components
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import { Card } from 'react-native-elements';
+import firebase from 'firebase';
+
+// Define a custom component for displaying the profile icon
+const ProfileIconComponent = ({ user }) => {
+  // Use the user's photo URL if available, otherwise use a default image
+  const photoURL = user.photoURL || 'https://i.imgur.com/6VBx3io.png';
+  return (
+    <Image
+      source={{ uri: photoURL }}
+      style={styles.profileIcon}
+    />
+  );
+};
+
+// Define a custom component for displaying the achievements and reports
+const CardComponent = ({ title, data }) => {
+  // Render a card with a title and a list of items
+  return (
+    <Card>
+      <Card.Title>{title}</Card.Title>
+      <Card.Divider />
+      {data.map((item, index) => (
+        <Text key={index} style={styles.cardItem}>
+          - {item}
+        </Text>
+      ))}
+    </Card>
+  );
+};
+
+// Define the main component for the MyProfileScreen
+const MyProfileScreen = () => {
+  // Initialize the state variables for the user, achievements and reports
+  const [user, setUser] = useState(null);
+  const [achievements, setAchievements] = useState([]);
+  const [reports, setReports] = useState([]);
+
+  // Define a function to fetch the user data from firebase
+  const fetchUserData = async () => {
+    // Get the current user from firebase auth
+    const currentUser = firebase.auth().currentUser;
+    // Get the user document from firebase firestore
+    const userDoc = await firebase
+      .firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .get();
+    // Set the user state with the user data
+    setUser(userDoc.data());
+  };
+
+  // Define a function to fetch the achievements and reports from firebase
+  const fetchCardData = async () => {
+    // Get the current user from firebase auth
+    const currentUser = firebase.auth().currentUser;
+    // Get the achievements and reports documents from firebase firestore
+    const achievementsDoc = await firebase
+      .firestore()
+      .collection('achievements')
+      .doc(currentUser.uid)
+      .get();
+    const reportsDoc = await firebase
+      .firestore()
+      .collection('reports')
+      .doc(currentUser.uid)
+      .get();
+    // Set the achievements and reports state with the data
+    setAchievements(achievementsDoc.data().items);
+    setReports(reportsDoc.data().items);
+  };
+
+  // Use the useEffect hook to fetch the data when the component mounts
+  useEffect(() => {
+    fetchUserData();
+    fetchCardData();
+  }, []);
+
+  // Render the component
+  return (
+    <View style={styles.container}>
+      {/* Render the profile icon, user name and user ID */}
+      <View style={styles.profileContainer}>
+        <ProfileIconComponent user={user} />
+        <View style={styles.profileTextContainer}>
+          <Text style={styles.profileText}>{user?.name}</Text>
+          <Text style={styles.profileText}>{user?.id}</Text>
+        </View>
+      </View>
+      {/* Render the achievements and reports cards */}
+      <View style={styles.cardContainer}>
+        <CardComponent title="Achievements" data={achievements} />
+        <CardComponent title="Recent Reports" data={reports} />
+      </View>
+    </View>
+  );
+};
+
+// Define the styles for the components
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20,
+  },
+  profileIcon: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    margin: 10,
+  },
+  profileTextContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  profileText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    margin: 5,
+  },
+  cardContainer: {
+    flex: 2,
+    width: '90%',
+  },
+  cardItem: {
+    fontSize: 16,
+    margin: 5,
+  },
+});
+
+// Export the component
+export default MyProfileScreen;
