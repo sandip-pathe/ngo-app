@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         overflow: 'hidden',
         width: 100,
+        borderColor: Colors.grey,
     },
     image: {
         height: '100%',

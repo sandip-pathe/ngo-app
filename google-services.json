@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "316154321668",
+    "project_id": "sevafoundatiom",
+    "storage_bucket": "sevafoundatiom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316154321668:android:876267ee6fe490e9e1ce51",
+        "android_client_info": {
+          "package_name": "attendance.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316154321668-0ttfdetcub5cf0utbo7bjh2gmj0qr3cm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ9FC6ReLnGW5N_csNfwlhBnXkcLxZnNE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316154321668-0ttfdetcub5cf0utbo7bjh2gmj0qr3cm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

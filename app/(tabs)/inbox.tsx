@@ -1,18 +1,26 @@
 // ScreenOne.js
 import React from 'react';
-import { View, Text } from 'react-native';
-import MyInputField from '../../components/MyInputField';
-import { defaultStyles } from '../../constants/Styles';
+import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 
 const ScreenOne = () => {
   return (
-    <View style={{ alignContent: 'center', flex: 1 }}>
-      <MyInputField label="Name" />
-      <Link href={"/EventReports/ScreenTwo"}>Sandip</Link>
+    <View style={styles.container}>
+      <Link href={"/EventReports/ScreenOne"}>ScreenOne</Link>
+      <Link href={"/EventReports/ScreenTwo"}>ScreenTwo</Link>
+      <Link href={"/EventReports/DummyForm"}>Form</Link>
     </View>
 
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    alignContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    gap: 40,
+    justifyContent: 'center',
+  }
+})
 
 export default ScreenOne;

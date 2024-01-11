@@ -6,12 +6,9 @@ export const defaultStyles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   inputField: {
-    height: 44,
-    borderBottomWidth: 1,
     borderColor: '#ABABAB',
-    borderRadius: 8,
-    padding: 10,
     backgroundColor: '#fff',
+    flex: 1,
   },
   btn: {
     backgroundColor: Colors.primary,
@@ -23,10 +20,12 @@ export const defaultStyles = StyleSheet.create({
   btnText: {
     color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
   },
   btnIcon: {
     position: 'absolute',
     left: 16,
+    color: Colors.primary,
   },
   footer: {
     position: 'absolute',
@@ -43,7 +42,7 @@ export const defaultStyles = StyleSheet.create({
   btnOutline: {
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: Colors.grey,
+    borderColor: Colors.primary,
     height: 50,
     borderRadius: 8,
     alignItems: 'center',

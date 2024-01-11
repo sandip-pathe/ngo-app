@@ -1,182 +1,146 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, Pressable } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { defaultStyles } from '../../constants/Styles';
-import { Link } from 'expo-router';
-// import firebase from 'firebase'; // Import Firebase
+import TimePicker from '../../components/TimePicker';
+import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import Colors from '../../constants/Colors';
+import Separator from '../../components/Separator';
+import { Link, useNavigation } from 'expo-router';
+import firestore from '@react-native-firebase/firestore';
 
 const ScreenOne = () => {
     const [date, setDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [showStartTimePicker, setShowStartTimePicker] = useState(false);
-    const [showEndTimePicker, setShowEndTimePicker] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+    const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
     const [eventName, setEventName] = useState('');
     const [description, setDescription] = useState('');
     const [attendees, setAttendees] = useState('');
     const [venue, setVenue] = useState('');
 
+    const eventsRef = firestore().collection('events');
+    const navigation: any = useNavigation();
+
     const showDatepicker = () => {
         setShowDatePicker(true);
     };
 
-    const showStartTimepicker = () => {
-        setShowStartTimePicker(true);
-    };
-
-    const showEndTimepicker = () => {
-        setShowEndTimePicker(true);
-    };
-
-    const handleDateChange = (event: any, selectedDate: React.SetStateAction<Date>) => {
+    const handleDateChange = (event: Event, selectedDate: Date | undefined) => {
         setShowDatePicker(false);
         if (selectedDate) {
             setDate(selectedDate);
-            // Set the selected date to a state variable
+            setSelectedDate(selectedDate);
         }
     };
 
-    const handleTimeChange = (event: any, selectedTime: any) => {
-        setShowStartTimePicker(false);
-        setShowEndTimePicker(false);
-        if (selectedTime) {
-            setSelectedTime(selectedTime);
+    const handleTimeChange = (time: string) => {
+        if (time) {
+            setSelectedTime(time);
         }
     };
 
     const handleNextButtonClick = () => {
-        // Log the data to console
-        console.log('Event Name:', eventName);
-        console.log('Date:', date.toLocaleDateString());
-        console.log('Start Time:', date.toLocaleTimeString());
-        console.log('End Time:', date.toLocaleTimeString());
-        console.log('Description:', description);
-        console.log('Number of Attendees:', attendees);
-        console.log('Venue:', venue);
-
-        // Push data to Firebase
-        const eventData = {
+        // Prepare data from ScreenOne
+        const eventDataFromScreenOne = {
             eventName,
-            date: date.toLocaleDateString(),
-            startTime: date.toLocaleTimeString(),
-            endTime: date.toLocaleTimeString(),
+            date: selectedDate?.toLocaleDateString(),
+            startTime: selectedTime,
+            endTime: selectedTime,
             description,
             attendees,
             venue,
         };
 
-        // Replace with your Firebase configuration
-        const firebaseConfig = {
-            apiKey: 'your-api-key',
-            authDomain: 'your-auth-domain',
-            projectId: 'your-project-id',
-            storageBucket: 'your-storage-bucket',
-            messagingSenderId: 'your-messaging-sender-id',
-            appId: 'your-app-id',
-        };
-
-        // if (!firebase.apps.length) {
-        //     firebase.initializeApp(firebaseConfig);
-        // }
-
-        // const db = firebase.firestore();
-        // db.collection('events').add(eventData)
-        //     .then(() => {
-        //         console.log('Data successfully added to Firebase');
-        //     })
-        //     .catch(error => {
-        //         console.error('Error adding data to Firebase:', error);
-        //     });
+        // Navigate to ScreenTwo and pass data as params
+        navigation.push('ScreenTwo', {
+            eventDataFromScreenOne,
+        });
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.nameText}>Event / Program details</Text>
-            <TextInput style={[defaultStyles.inputField, { marginBottom: 10 }]} placeholder="Name" onChangeText={setEventName} />
-            <View style={styles.itemContainer}>
-                <Text>Date: {date.toLocaleDateString()}</Text>
-                <TouchableOpacity onPress={showDatepicker} style={styles.button}>
-                    <Text style={styles.buttonText}>Select Date</Text>
+        <ScrollView style={styles.container}>
+            <View style={{ gap: 25 }}>
+                <View style={[styles.itemContainer, { paddingTop: 16 }]}>
+                    <Ionicons name="megaphone" size={30} color={Colors.grey} />
+                    <TextInput style={[defaultStyles.inputField]} placeholder="Event Name" onChangeText={setEventName} multiline />
+                </View>
+                <Separator />
+                <View style={styles.itemContainer}>
+                    <Ionicons name="calendar" size={30} color={Colors.grey} />
+                    <TouchableOpacity style={styles.dateItem} onPress={showDatepicker}>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{date.toLocaleDateString()}</Text>
+                    </TouchableOpacity>
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={date}
+                            mode="date"
+                            is24Hour={true}
+                            display="default"
+                            onChange={handleDateChange as any} // Adjusting the onChange prop
+                        />
+                    )}
+                </View>
+                <View style={styles.itemContainer}>
+                    <Ionicons name="time" size={30} color={Colors.grey} />
+                    <TimePicker onTimeChange={handleTimeChange} />
+                </View>
+                <View style={styles.itemContainer}>
+                    <Ionicons name="time" size={30} color={Colors.grey} />
+                    <TimePicker onTimeChange={handleTimeChange} />
+                </View>
+                <Separator />
+                <View style={styles.itemContainer}>
+                    <MaterialCommunityIcons name="card-text" size={30} color={Colors.grey} />
+                    <TextInput style={[defaultStyles.inputField]} placeholder="Description" multiline onChangeText={setDescription} />
+                </View>
+                <Separator />
+                <View style={styles.itemContainer}>
+                    <Ionicons name="people" size={30} color={Colors.grey} />
+                    <TextInput style={[defaultStyles.inputField]} placeholder="Number of Attendees" keyboardType="numeric" onChangeText={setAttendees} />
+                </View>
+                <Separator />
+                <View style={styles.itemContainer}>
+                    <Ionicons name="location" size={30} color={Colors.grey} />
+                    <TextInput style={[defaultStyles.inputField]} placeholder="Venue" multiline onChangeText={setVenue} />
+                </View>
+                <Separator />
+                <TouchableOpacity style={styles.submitButton} onPress={handleNextButtonClick}>
+                    <Link href={"/EventReports/ScreenTwo"}>Next</Link>
+                    <FontAwesome name="angle-double-right" size={24} color="black" />
                 </TouchableOpacity>
-                {showDatePicker && (
-                    <DateTimePicker
-                        value={date}
-                        mode="date"
-                        is24Hour={true}
-                        display="default"
-                    // onChange={handleDateChange}
-                    />
-                )}
             </View>
-            <View style={styles.itemContainer}>
-                <Text>Start Time: {date.toLocaleTimeString()}</Text>
-                <TouchableOpacity onPress={showStartTimepicker} style={styles.button}>
-                    <Text style={styles.buttonText}>Select Time</Text>
-                </TouchableOpacity>
-                {showStartTimePicker && (
-                    <DateTimePicker
-                        value={date}
-                        mode="time"
-                        is24Hour={true}
-                        display="default"
-                        onChange={handleTimeChange}
-                    />
-                )}
-            </View>
-            <View style={styles.itemContainer}>
-                <Text>End Time: {date.toLocaleTimeString()}</Text>
-                <TouchableOpacity onPress={showEndTimepicker} style={styles.button}>
-                    <Text style={styles.buttonText}>Select Time</Text>
-                </TouchableOpacity>
-                {showEndTimePicker && (
-                    <DateTimePicker
-                        value={date}
-                        mode="time"
-                        is24Hour={true}
-                        display="default"
-                        onChange={handleTimeChange}
-                    />
-                )}
-            </View>
-            <TextInput style={[defaultStyles.inputField, { marginBottom: 10 }]} placeholder="Description" multiline numberOfLines={4} onChangeText={setDescription} />
-            <TextInput style={[defaultStyles.inputField, { marginBottom: 10 }]} placeholder="Number of Attendees" keyboardType="numeric" onChangeText={setAttendees} />
-            <TextInput style={[defaultStyles.inputField, { marginBottom: 10 }]} placeholder="Venue" onChangeText={setVenue} />
-            <Link style={{ padding: 10 }} href={'/EventReports/ScreenTwo'}>
-                Sandip
-            </Link>
-        </View>
+        </ScrollView>
     );
 };
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
         backgroundColor: '#fff',
     },
     itemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
+        alignContent: 'center',
+        gap: 10,
+        paddingHorizontal: 16,
     },
-    nameText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
-        flexShrink: 1,
+    dateItem: {
+        paddingVertical: 5,
+        backgroundColor: 'white',
+        borderRadius: 2,
+        margin: 5,
     },
-    button: {
-        backgroundColor: '#2196F3',
-        borderRadius: 8,
-        padding: 12,
-        marginLeft: 8,
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
+    submitButton: {
+        alignContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        gap: 10,
+        padding: 10,
+
+    }
 });
 
 export default ScreenOne;

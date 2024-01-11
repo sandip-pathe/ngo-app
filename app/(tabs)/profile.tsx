@@ -1,20 +1,12 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
-import { useAuth } from '@clerk/clerk-expo'
-import { Link } from 'expo-router';
 
-const Profile = () => {
-  const { signOut, isSignedIn } = useAuth();
+const profile = () => {
   return (
     <View>
-      <Button title='Log Out' onPress={() => signOut()} />
-      {!isSignedIn &&
-        <Link href={'/(modals)/login'}>
-          <Text>Log In</Text>
-        </Link>
-      }
+      <Text>profile</Text>
     </View>
   )
 }
 
-export default Profile
+export default profile

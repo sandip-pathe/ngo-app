@@ -30,7 +30,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({ fullName }) => {
 
     return (
         <View style={[styles.profileIcon, { backgroundColor }]}>
-            <Text style={styles.initials}>{initials}</Text>
+            <Text style={[styles.initials,]}>{initials}</Text>
         </View>
     );
 };
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     },
     initials: {
         color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 20,
+        fontWeight: '900',
     },
 });
 

@@ -55,7 +55,7 @@ const Data = [
     },
     {
         id: '10',
-        name: 'David "The Scientist Guy"',
+        name: 'David',
         presentee: 18,
         rollNumber: '21103A0029',
     },
