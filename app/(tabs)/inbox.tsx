@@ -7,8 +7,6 @@ const ScreenOne = () => {
   return (
     <View style={styles.container}>
       <Link href={"/EventReports/ScreenOne"}>ScreenOne</Link>
-      <Link href={"/EventReports/ScreenTwo"}>ScreenTwo</Link>
-      <Link href={"/EventReports/DummyForm"}>Form</Link>
     </View>
 
   );

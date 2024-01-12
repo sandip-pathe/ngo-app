@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 
 type EventDetails = {
     eventName: string;
-    date: string;
+    date: string | Date;
     startTime: string;
     endTime: string;
     description: string;

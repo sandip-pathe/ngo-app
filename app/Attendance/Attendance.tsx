@@ -5,6 +5,7 @@ import Data from '../../constants/Data';
 import { Stack } from 'expo-router';
 import ExploreHeader from '../../components/ExploreHeader';
 import Separator from '../../components/Separator';
+import Colors from '../../constants/Colors';
 
 interface DataItem {
     id: string;
@@ -48,6 +49,14 @@ const App = () => {
                 header: () => <ExploreHeader />,
             }}
             />
+            <View style={[styles.actionRow, { gap: 50 }]}>
+                <TouchableOpacity style={[styles.btnOutline, { backgroundColor: Colors.primary }]}>
+                    <Text style={[styles.btnOutlineText]}>All Present</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.btnOutline}>
+                    <Text style={styles.btnOutlineText}>All Absent</Text>
+                </TouchableOpacity>
+            </View>
             <View style={{ flex: 1 }}>
                 <FlatList
                     data={Data}
@@ -62,6 +71,30 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
+    actionRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8,
+        paddingBottom: 16,
+        gap: 10,
+    },
+    btnOutline: {
+        flex: 1,
+        backgroundColor: '#e2e2e2',
+        borderColor: Colors.grey,
+        height: 30,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+    },
+    btnOutlineText: {
+        color: '#000',
+        fontSize: 16,
+        fontFamily: 'mon-sb',
+    },
     container: {
         padding: 16,
         backgroundColor: '#fff',
@@ -70,7 +103,7 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
+        marginVertical: 8,
     },
     detailsContainer: {
         flex: 1,

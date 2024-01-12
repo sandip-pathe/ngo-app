@@ -1,7 +1,6 @@
-import { Text, View } from 'react-native'
 import React, { Component } from 'react'
 import { Tabs } from 'expo-router'
-import { Feather, FontAwesome5, Foundation, Octicons } from '@expo/vector-icons';
+import { FontAwesome5, Foundation } from '@expo/vector-icons';
 
 export class Layout extends Component {
     render() {
@@ -23,7 +22,7 @@ export class Layout extends Component {
                         tabBarIcon: ({ color, size }) => <FontAwesome5 name='ello' size={size} color={color} />
                     }} />
                 <Tabs.Screen
-                    name="explore"
+                    name="attendance"
                     options={{
                         tabBarLabel: 'Attendance',
                         tabBarIcon: ({ color, size }) => <Foundation name="graph-pie" size={size} color={color} />

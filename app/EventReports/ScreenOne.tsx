@@ -3,12 +3,10 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { defaultStyles } from '../../constants/Styles';
 import TimePicker from '../../components/TimePicker';
-import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import Separator from '../../components/Separator';
-import { NavigationContainer } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList, ScreenOneRouteProp } from './NavigationTypes';
+import ImageInputList from '../../components/ImageInputList';
 
 interface EventData {
     eventName: string;
@@ -18,16 +16,12 @@ interface EventData {
     description: string;
     attendees: number;
     venue: string;
+    objectivesAchieved: string;
 }
 
 
-interface ScreenOneProps {
-    navigation: {
-        navigate: (screenName: string, params: object) => void
-    }
-}
 
-const ScreenOne: React.FC<ScreenOneProps> = ({ navigation }) => {
+const ScreenOne = () => {
 
     const [date, setDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -61,20 +55,29 @@ const ScreenOne: React.FC<ScreenOneProps> = ({ navigation }) => {
         }
     };
 
-    const handleNext = () => {
-        const eventDataFromScreenOne: EventData = {
+    const [objectivesAchieved, setObjectivesAchieved] = useState('');
+    const [imageUris, setImageUris] = useState<string[]>([]);
+
+    // const eventsRef = firestore().collection('events');
+
+    const handleAdd = (uri: string) => {
+        setImageUris([...imageUris, uri]);
+    };
+
+    const handleRemove = (uri: string) => {
+        setImageUris(imageUris.filter((imageUri) => imageUri !== uri));
+    };
+
+    const handleSubmit = () => {
+        // Combine data from ScreenOne and ScreenTwo
+        const eventDataFromScreenTwo = {
             eventName,
-            date: '', // Set the date value based on your implementation
-            startTime: '',
-            endTime: '',
-            description,
-            attendees: parseInt(attendees, 10) || 0,
-            venue,
+            objectivesAchieved,
+            // Add other fields as needed
         };
 
-
-
-        navigation.navigate('ScreenTwo', { name: 'Jane' })
+        // Now you can push the combined data to the database or perform any other actions
+        console.log('Combined data:', eventDataFromScreenTwo);
     };
 
 
@@ -111,11 +114,6 @@ const ScreenOne: React.FC<ScreenOneProps> = ({ navigation }) => {
                 </View>
                 <Separator />
                 <View style={styles.itemContainer}>
-                    <MaterialCommunityIcons name="card-text" size={30} color={Colors.grey} />
-                    <TextInput style={[defaultStyles.inputField]} placeholder="Description" multiline onChangeText={setDescription} />
-                </View>
-                <Separator />
-                <View style={styles.itemContainer}>
                     <Ionicons name="people" size={30} color={Colors.grey} />
                     <TextInput style={[defaultStyles.inputField]} placeholder="Number of Attendees" keyboardType="numeric" onChangeText={setAttendees} />
                 </View>
@@ -125,10 +123,35 @@ const ScreenOne: React.FC<ScreenOneProps> = ({ navigation }) => {
                     <TextInput style={[defaultStyles.inputField]} placeholder="Venue" multiline onChangeText={setVenue} />
                 </View>
                 <Separator />
-                <TouchableOpacity style={styles.submitButton} onPress={handleNext}>
-                    <Text>Next</Text>
-                    <FontAwesome name="angle-double-right" size={24} color="black" />
+                <View style={styles.itemContainer}>
+                    <MaterialCommunityIcons name="card-text" size={30} color={Colors.grey} />
+                    <TextInput style={[defaultStyles.inputField]} placeholder="Description" multiline onChangeText={setDescription} />
+                </View>
+                <Separator />
+                <View style={[styles.itemContainer,]}>
+                    <Entypo name="emoji-happy" size={30} color={Colors.grey} />
+                    <TextInput style={[defaultStyles.inputField]} placeholder="Objectives Achieved" multiline onChangeText={setObjectivesAchieved} />
+                </View>
+                <Separator />
+                <TouchableOpacity style={[styles.itemContainer,]}>
+                    <Ionicons name="attach" size={30} color={Colors.grey} />
+                    <Text>Add Attachments</Text>
                 </TouchableOpacity>
+                <Separator />
+                <View style={styles.itemContainer}>
+                    <Ionicons name="image" size={30} color={Colors.grey} />
+                    <ImageInputList imageUris={imageUris} onAddImage={handleAdd} onRemoveImage={handleRemove} />
+                </View>
+                <Separator />
+                <View style={{
+                    alignItems: 'flex-end',
+                    padding: 16,
+                }}>
+                    <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+                        <Text>Submit</Text>
+                        <FontAwesome name="angle-double-right" size={24} color="black" />
+                    </TouchableOpacity>
+                </View>
             </View>
         </ScrollView>
     );
@@ -158,7 +181,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 10,
         padding: 10,
-
     }
 });
 

@@ -53,14 +53,6 @@ const ExploreHeader = () => {
                             <Ionicons name='options-outline' size={24} />
                         </TouchableOpacity>
                     </View>
-                    <View style={[styles.actionRow, { gap: 50 }]}>
-                        <TouchableOpacity style={[styles.btnOutline, { backgroundColor: Colors.primary }]}>
-                            <Text style={[styles.btnOutlineText]}>All Present</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btnOutline}>
-                            <Text style={styles.btnOutlineText}>All Absent</Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
             </SafeAreaView>
         </>
@@ -69,23 +61,16 @@ const ExploreHeader = () => {
 
 const styles = StyleSheet.create({
     container: {
-        height: 110,
+        height: 70,
         backgroundColor: Colors.light,
         paddingTop: 16,
     },
     safeView: {
         flex: 1,
-        backgroundColor: Colors.dark,
+        backgroundColor: Colors.primary,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
-    actionRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 8,
-        paddingBottom: 16,
-        gap: 10,
-    },
+
     filterBtn: {
         padding: 5,
         borderWidth: 1,
@@ -94,7 +79,7 @@ const styles = StyleSheet.create({
     },
     searchBtn: {
         height: 40,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.light,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 16,
@@ -112,21 +97,13 @@ const styles = StyleSheet.create({
             height: 1,
         },
     },
-    btnOutline: {
-        flex: 1,
-        backgroundColor: '#e2e2e2',
-        borderColor: Colors.grey,
-        height: 30,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+    actionRow: {
         flexDirection: 'row',
-        paddingHorizontal: 10,
-    },
-    btnOutlineText: {
-        color: '#000',
-        fontSize: 16,
-        fontFamily: 'mon-sb',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8,
+        paddingBottom: 16,
+        gap: 10,
     },
 })
 
