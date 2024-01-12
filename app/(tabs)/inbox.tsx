@@ -1,24 +1,12 @@
-// ScreenOne.js
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Text } from 'react-native'
+import React from 'react'
 
-const ScreenOne = () => {
+const inbox = () => {
   return (
-    <View style={styles.container}>
-      <Link href={"/EventReports/ScreenOne"}>ScreenOne</Link>
+    <View>
+      <Text>inbox</Text>
     </View>
+  )
+}
 
-  );
-};
-const styles = StyleSheet.create({
-  container: {
-    alignContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    gap: 40,
-    justifyContent: 'center',
-  }
-})
-
-export default ScreenOne;
+export default inbox

@@ -68,6 +68,7 @@ function RootLayoutNav() {
         }}
       />
       <Stack.Screen name='EventReports' options={{ headerShown: false }} />
+      <Stack.Screen name='Attendance' options={{ headerShown: false }} />
     </Stack>
   );
 }

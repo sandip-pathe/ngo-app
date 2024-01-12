@@ -1,39 +1,9 @@
 import { View, Text, StyleSheet, SafeAreaView, Platform, TouchableOpacity, StatusBar, ScrollView, FlatList } from 'react-native'
 import React from 'react'
-import { Link } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import Colors from '../constants/Colors'
+import { TextInput } from 'react-native-gesture-handler'
 
-const categories = [
-    {
-        name: 'Tiny homes',
-        icon: 'home',
-    },
-    {
-        name: 'Cabins',
-        icon: 'house-siding',
-    },
-    {
-        name: 'Trending',
-        icon: 'local-fire-department',
-    },
-    {
-        name: 'Play',
-        icon: 'videogame-asset',
-    },
-    {
-        name: 'City',
-        icon: 'apartment',
-    },
-    {
-        name: 'Beachfront',
-        icon: 'beach-access',
-    },
-    {
-        name: 'Countryside',
-        icon: 'nature-people',
-    },
-];
 
 const ExploreHeader = () => {
     return (
@@ -41,14 +11,15 @@ const ExploreHeader = () => {
             <SafeAreaView style={styles.safeView} >
                 <View style={styles.container}>
                     <View style={styles.actionRow}>
-                        <Link href={'/(tabs)/inbox'} asChild>
-                            <TouchableOpacity style={styles.searchBtn}>
-                                <Ionicons name='search' size={24} />
-                                <View>
-                                    <Text style={{ fontSize: 20, color: Colors.grey }}>Search</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </Link>
+                        <View style={styles.searchBtn}>
+                            <Ionicons name='search' size={24} />
+                            <View>
+                                <TextInput
+                                    placeholder='Search Reports'
+                                    multiline={false}
+                                />
+                            </View>
+                        </View>
                         <TouchableOpacity style={styles.filterBtn}>
                             <Ionicons name='options-outline' size={24} />
                         </TouchableOpacity>
@@ -73,9 +44,6 @@ const styles = StyleSheet.create({
 
     filterBtn: {
         padding: 5,
-        borderWidth: 1,
-        borderColor: Colors.grey,
-        borderRadius: 24,
     },
     searchBtn: {
         height: 40,
@@ -101,7 +69,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 8,
+        paddingHorizontal: 16,
         paddingBottom: 16,
         gap: 10,
     },
