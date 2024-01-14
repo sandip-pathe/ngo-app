@@ -1,0 +1,324 @@
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import Separator from '../../components/Separator';
+import Colors from '../../constants/Colors';
+import ProfileIcon from '../../components/StudentProfileIcon';
+
+
+{
+
+https://chat.openai.com/share/dfafa048-f65c-4058-8ad5-ed0fc2108745
+
+
+}
+
+
+interface Student {
+    id: string;
+    rollNumber: string;
+    // Add other relevant student properties
+}
+
+const AttendanceScreen: React.FC = () => {
+    const navigation = useNavigation();
+    const [students, setStudents] = useState<Student[]>([]);
+
+    // Dummy user and class IDs
+    const userId = 'userId1';
+    const classId = 'classId1';
+
+    useEffect(() => {
+        const fetchStudents = async () => {
+            try {
+                const snapshot = await firestore()
+                    .collection('users')
+                    .doc(userId)
+                    .collection('classes')
+                    .doc(classId)
+                    .collection('students')
+                    .get();
+
+                const studentData: Student[] = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                setStudents(studentData);
+            } catch (error) {
+                console.error('Error fetching students', error);
+            }
+        };
+
+        fetchStudents();
+    }, [userId, classId]);
+
+    const markAttendance = async (studentId: string) => {
+        try {
+            // Assuming today's date as the attendance date
+            const dateId = new Date().toISOString().split('T')[0];
+
+            await firestore()
+                .collection('users')
+                .doc(userId)
+                .collection('classes')
+                .doc(classId)
+                .collection('students')
+                .doc(studentId)
+                .collection('attendance')
+                .doc(dateId)
+                .set({
+                    status: 'present', // Change this based on your marking logic
+                });
+
+            // Refresh the student data after marking attendance
+            fetchStudents();
+        } catch (error) {
+            console.error('Error marking attendance', error);
+        }
+    };
+
+    const renderItem = ({ item }: { item: Student }) => (
+        <View style={styles.itemContainer}>
+            <ProfileIcon fullName={item.name} />
+            <View style={styles.detailsContainer}>
+                <Text style={styles.nameText}>{item.name}</Text>
+                <View style={styles.infoContainer}>
+                    <View style={styles.badgeContainer}>
+                        <Text style={styles.badgeText}>{item.rollNumber}</Text>
+                    </View>
+                    <View style={styles.presentDaysContainer}>
+                        <Text style={styles.presentDaysText}>{item.presentee}</Text>
+                    </View>
+                </View>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={() => markAttendance(item.id)}>
+                <Text style={styles.buttonText}>Mark Present</Text>
+            </TouchableOpacity>
+        </View>
+    );
+
+    const ItemSeparator = () => <Separator />;
+
+    return (
+        <View style={[styles.container, { paddingTop: 120 }]}>
+            <FlatList
+                data={students}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                ItemSeparatorComponent={ItemSeparator}
+            />
+        </View>
+    );
+};
+
+export default AttendanceScreen;
+
+
+const styles = StyleSheet.create({
+    actionRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8,
+        paddingBottom: 16,
+        gap: 10,
+    },
+    btnOutline: {
+        flex: 1,
+        backgroundColor: '#e2e2e2',
+        borderColor: Colors.grey,
+        height: 30,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+    },
+    btnOutlineText: {
+        color: '#000',
+        fontSize: 16,
+    },
+    container: {
+        padding: 16,
+        backgroundColor: '#fff',
+        paddingTop: 120,
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 8,
+    },
+    detailsContainer: {
+        flex: 1,
+        marginLeft: 16,
+        marginRight: 16,
+    },
+    nameText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        flexShrink: 1,
+    },
+    infoContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    badgeContainer: {
+        backgroundColor: '#e2e2e2',
+        paddingVertical: 2,
+        paddingHorizontal: 8,
+        borderRadius: 8,
+    },
+    badgeText: {
+        fontSize: 10,
+        color: 'black',
+        flexShrink: 1,
+    },
+    presentDaysContainer: {
+        backgroundColor: '#4CAF50',
+        paddingVertical: 3,
+        paddingHorizontal: 10,
+        borderRadius: 40,
+        marginLeft: 8,
+    },
+    presentDaysText: {
+        fontSize: 10,
+        color: 'white',
+        flexShrink: 1,
+    },
+    button: {
+        backgroundColor: '#2196F3',
+        borderRadius: 50,
+        padding: 12,
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    separator: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: '#CED0CE',
+        marginVertical: 8,
+    },
+});
+
+// Path: app/Attendance/index.tsx
+
+
+
+Firestore
+|-- users (collection)
+|   |-- userId (document)
+|   |   |-- classes (subcollection)
+|   |   |   |-- classId (document)
+|   |   |   |   |-- className: "Math101"
+|   |   |   |   |-- students (subcollection)
+|   |   |   |   |   |-- studentId (document)
+|   |   |   |   |   |   |-- rollNumber: "student1"
+|   |   |   |   |   |   |-- attendance: (subcollection)
+|   |   |   |   |   |   |   |-- dateId (document)
+|   |   |   |   |   |   |   |   |-- status: "present"
+
+
+
+With this structure:
+
+Each user has their own collection of classes.
+Each class has its own collection of students.
+Each student has their own collection of attendance records.
+Here's how you might structure the data types:
+
+Users Collection:
+
+userId: String (Unique identifier for the user)
+userName: String (Username for the user)
+classes: Subcollection (Classes managed by the user)
+Classes Documents:
+
+classId: String (Unique identifier for the class)
+className: String (Name or identifier for the class)
+students: Subcollection (Students enrolled in the class)
+Students Documents:
+
+studentId: String (Unique identifier for the student, e.g., roll number)
+rollNumber: String (Roll number or identifier for the student)
+attendance: Subcollection (Attendance records for the student)
+Attendance Documents:
+
+dateId: String (Unique identifier for the date, e.g., formatted date string)
+status: String ("present" or "absent")
+This structure allows you to efficiently query attendance data for a specific user, class, or student. Additionally, it provides a clear separation of data, making it easier to manage and scale as needed.
+
+
+
+
+{
+  "users": {
+    "userId1": {
+      "userName": "teacher1",
+      "classes": {
+        "classId1": {
+          "className": "Math101",
+          "students": {
+            "studentId1": {
+              "rollNumber": "001",
+              "attendance": {
+                "2022-01-10": {
+                  "status": "present"
+                },
+                "2022-01-11": {
+                  "status": "absent"
+                }
+              }
+            },
+            "studentId2": {
+              "rollNumber": "002",
+              "attendance": {
+                "2022-01-10": {
+                  "status": "absent"
+                },
+                "2022-01-11": {
+                  "status": "present"
+                }
+              }
+            }
+            // ... other students
+          }
+        },
+        "classId2": {
+          "className": "English101",
+          "students": {
+            "studentId1": {
+              "rollNumber": "101",
+              "attendance": {
+                "2022-01-10": {
+                  "status": "present"
+                },
+                "2022-01-11": {
+                  "status": "present"
+                }
+              }
+            },
+            "studentId2": {
+              "rollNumber": "102",
+              "attendance": {
+                "2022-01-10": {
+                  "status": "absent"
+                },
+                "2022-01-11": {
+                  "status": "absent"
+                }
+              }
+            }
+            // ... other students
+          }
+        }
+        // ... other classes
+      }
+    }
+  }
+}

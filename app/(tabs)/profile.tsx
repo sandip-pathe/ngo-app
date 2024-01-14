@@ -5,7 +5,7 @@ import Colors from '../../constants/Colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-const profile = () => {
+const Profile = () => {
   return (
     <>
       <Stack.Screen options={{
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default profile
+export default Profile

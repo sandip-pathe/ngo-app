@@ -1,9 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Stack } from 'expo-router';
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import ScreenOne from './ScreenOne';
+
+
+const Stack = createStackNavigator();
 
 export default function Layout() {
     return (
-        <Stack
+        <Stack.Navigator
             screenOptions={{
                 headerStyle: {
                     backgroundColor: '#00ADB5',
@@ -30,8 +35,11 @@ export default function Layout() {
                         onPress={() => console.log('open notifications')}
                     />
                 ),
-            }}
-        />
+            }}>
+            <Stack.Screen name="ScreenOne" component={ScreenOne} />
+        </Stack.Navigator >
     );
 }
+
+
 

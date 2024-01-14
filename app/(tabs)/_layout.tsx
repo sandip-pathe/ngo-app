@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Tabs } from 'expo-router'
 import { FontAwesome5, Foundation } from '@expo/vector-icons';
+import Colors from '../../constants/Colors';
 
 export class Layout extends Component {
     render() {
         return (
             <Tabs screenOptions={{
-                tabBarActiveTintColor: '#0000ff',
+                tabBarActiveTintColor: Colors.primary,
             }}>
 
                 <Tabs.Screen

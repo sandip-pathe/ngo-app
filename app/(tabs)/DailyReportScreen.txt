@@ -1,0 +1,124 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import XLSX from 'xlsx'; // for exporting to Excel
+import { Table, Row, Rows } from 'react-native-table-component'; // for rendering tables
+
+interface ReportData {
+  name: string;
+  rollNumber: string;
+  status: string;
+}
+
+const ReportScreen = () => {
+  const navigation = useNavigation();
+  const [reportData, setReportData] = useState<ReportData[]>([]);
+  const [tableHead, setTableHead] = useState<string[]>(['Name', 'Roll Number', 'Status']);
+  const [tableData, setTableData] = useState<string[][]>([]);
+
+  // Dummy user and class IDs
+  const userId = 'userId1';
+  const classId = 'classId1';
+  const currentDate = '2022-01-10'; // Replace with the actual date
+
+  useEffect(() => {
+    const fetchReportData = async () => {
+      try {
+        const snapshot = await firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('classes')
+          .doc(classId)
+          .collection('students')
+          .get();
+
+        const data: ReportData[] = snapshot.docs.map((doc) => {
+          const { name, rollNumber } = doc.data();
+          return {
+            name,
+            rollNumber,
+            // Fetch attendance status for the specified date
+            status: 'present', // Replace with the actual logic to fetch status for the specified date
+          };
+        });
+
+        setReportData(data);
+      } catch (error) {
+        console.error('Error fetching report data', error);
+      }
+    };
+
+    fetchReportData();
+  }, [userId, classId, currentDate]);
+
+  useEffect(() => {
+    // Convert report data into the format required by react-native-table-component
+    const newData: string[][] = reportData.map(({ name, rollNumber, status }) => [name, rollNumber, status]);
+    setTableData(newData);
+  }, [reportData]);
+
+  const exportToExcel = () => {
+    // Export data to Excel
+    const ws = XLSX.utils.aoa_to_sheet([tableHead, ...tableData]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'AttendanceReport');
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    const fileName = 'AttendanceReport.xlsx';
+    const uri = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${XLSX.write(wb, {
+      bookType: 'xlsx',
+      type: 'base64',
+    })}`;
+    // Implement logic to save or share the Excel file
+    console.log('Excel file generated:', fileName, uri);
+  };
+
+  return (
+    <ScrollView>
+      <Text style={styles.userName}>User Name</Text>
+      <Text style={styles.className}>Class Name</Text>
+      <TouchableOpacity style={styles.downloadExcelButton} onPress={exportToExcel}>
+        <Text style={styles.downloadExcelText}>Download in Excel</Text>
+      </TouchableOpacity>
+      <Text style={styles.date}>{currentDate}</Text>
+      <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
+        <Row data={tableHead} style={styles.head} textStyle={styles.text} />
+        <Rows data={tableData} textStyle={styles.text} />
+      </Table>
+    </ScrollView>
+  );
+};
+
+export default ReportScreen;
+
+const styles = StyleSheet.create({
+  userName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  className: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  downloadExcelButton: {
+    backgroundColor: '#2196F3',
+    borderRadius: 5,
+    padding: 10,
+    marginHorizontal: 20,
+    marginBottom: 10,
+  },
+  downloadExcelText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  date: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginVertical: 5,
+  },
+  head: { height: 40, backgroundColor: '#808B97' },
+  text: { margin: 6 },
+});

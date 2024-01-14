@@ -37,8 +37,8 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({ fullName }) => {
 
 const styles = StyleSheet.create({
     profileIcon: {
-        width: 50,
-        height: 50,
+        width: 45,
+        height: 45,
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',

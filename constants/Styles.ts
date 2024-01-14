@@ -54,4 +54,18 @@ export const defaultStyles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
   },
+  headingText: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#0f0f0f',
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
 });
