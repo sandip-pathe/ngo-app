@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Tabs } from 'expo-router'
-import { FontAwesome5, Foundation, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5, Foundation } from '@expo/vector-icons';
+
 import Colors from '../../constants/Colors';
 
 export class Layout extends Component {
